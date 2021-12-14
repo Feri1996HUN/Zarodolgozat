@@ -7,6 +7,7 @@ $tomb = null;
 
 // session törlése, ha valahol beragadt a session változó
 if (isset($_SESSION["user"])){
+    session_unset();
     session_destroy();
 }
 
@@ -40,6 +41,7 @@ if (isset($_SESSION["user"])){
   </div>
   <nav>
     <ul>
+      
       <li>
         <a href="index.php">Főoldal</a>
       </li>

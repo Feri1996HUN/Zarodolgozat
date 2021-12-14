@@ -5,10 +5,6 @@ require "db.php";
 $uzen = "";
 $tomb = null;
 
-// session törlése, ha valahol beragadt a session változó
-if (isset($_SESSION["user"])){
-    session_destroy();
-}
 
 // Ellenőzröm, hogy az oldal a login gombbal lett-e elküldve, és akkor dolgozom fel
 if (isset($_POST["login"])){
@@ -18,19 +14,20 @@ if (isset($_POST["login"])){
 
     // kapcsolódás az adatbázishoz
     $db = new Dbconnect();
-    $db->Connection("utinaplo");
+    $db->Connection("webshop");
 
     // Ellenőrizzük, hogy az illető jogosult-e a kapcsolódásra
     if ($tomb = $db->Bejelentkezes($user, $pass)){
         session_start();
         $_SESSION["user"] = $user;
-        $uzen = "Sikeres bejelentkezés!";
+        header("location: webshop.php");
     }
     else {
         $db = null;
         $uzen = "Hibás bejelentkezési adatok!";
     }
 }
+
 ?>
 
 
@@ -70,6 +67,13 @@ if (isset($_POST["login"])){
   </div>
   <nav>
     <ul>
+    <li>
+        <a><?php
+            if(isset($_SESSION["user"])){
+                echo ('Üdv, '.$_SESSION["user"]);
+            }
+        ?></a>
+      </li>
       <li>
         <a href="index.php">Főoldal</a>
       </li>
@@ -87,6 +91,13 @@ if (isset($_POST["login"])){
       </li>
       <li>
         <a class="fa fa-shopping-cart" href="kosar.php"></a>
+      </li>
+      <li>
+          <?php
+            if(isset($_SESSION["user"])){
+                echo ('<a href="index.php"></a>');
+            }
+        ?>
       </li>
     </ul>
   </nav>

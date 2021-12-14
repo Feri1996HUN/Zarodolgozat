@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2021 at 08:50 AM
+-- Generation Time: Dec 14, 2021 at 07:25 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -22,6 +22,26 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `webshop` DEFAULT CHARACTER SET utf16 COLLATE utf16_hungarian_ci;
 USE `webshop`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kategoriak`
+--
+
+CREATE TABLE `kategoriak` (
+  `ID_kategoria` int(11) NOT NULL,
+  `kategoria` varchar(15) COLLATE utf16_hungarian_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_hungarian_ci;
+
+--
+-- Dumping data for table `kategoriak`
+--
+
+INSERT INTO `kategoriak` (`ID_kategoria`, `kategoria`) VALUES
+(2, 'Minőségi italok'),
+(1, 'Sörök'),
+(3, 'Üditők');
 
 -- --------------------------------------------------------
 
@@ -69,33 +89,34 @@ CREATE TABLE `termekek` (
   `ID_Me` int(11) NOT NULL,
   `Nettoar` int(10) NOT NULL,
   `Afa` int(2) NOT NULL DEFAULT 27,
-  `Kep` varchar(100) COLLATE utf16_hungarian_ci NOT NULL
+  `Kep` varchar(100) COLLATE utf16_hungarian_ci NOT NULL,
+  `ID_kategoria` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_hungarian_ci;
 
 --
 -- Dumping data for table `termekek`
 --
 
-INSERT INTO `termekek` (`ID_termek`, `Nev`, `Mennyiseg`, `ID_Me`, `Nettoar`, `Afa`, `Kep`) VALUES
-(35, 'Coca Cola', 0, 2, 150, 27, ''),
-(36, 'Dobozos Borsodi sör', 0, 2, 288, 27, ''),
-(37, 'Dobozos Kőbányai sör', 0, 2, 215, 27, ''),
-(38, 'Dobozos Soproni sör', 0, 2, 230, 27, ''),
-(39, 'Fanta', 0, 2, 211, 27, ''),
-(40, 'Finlandia vodka', 0, 1, 2550, 27, ''),
-(41, 'Grants whiskey', 0, 1, 3890, 27, ''),
-(42, 'Jack Daniels whiskey 1,0', 0, 1, 3650, 27, ''),
-(43, 'Jack Daniels whiskey 0,7', 0, 1, 4200, 27, ''),
-(44, 'Jameson whiskey', 0, 1, 3100, 27, ''),
-(45, 'Jim Beam whiskey 1,0', 1, 1, 5235, 27, ''),
-(46, 'Jim Beam whiskey 0,7', 0, 1, 4750, 27, ''),
-(47, 'Kaiser vodka', 1, 1, 3989, 27, ''),
-(48, 'Royal vodka', 0, 1, 2365, 27, ''),
-(49, 'Borsodi sör üveg', 0, 2, 185, 27, ''),
-(50, 'Kőbányai sör üveg', 0, 2, 180, 27, ''),
-(51, 'Soproni sör üveg', 0, 2, 190, 27, ''),
-(52, 'Sörös üveg 0,5', 0, 2, 25, 0, ''),
-(53, 'Rekesz Braus', 0, 2, 508, 0, '');
+INSERT INTO `termekek` (`ID_termek`, `Nev`, `Mennyiseg`, `ID_Me`, `Nettoar`, `Afa`, `Kep`, `ID_kategoria`) VALUES
+(35, 'Coca Cola', 0, 2, 150, 27, '', 0),
+(36, 'Dobozos Borsodi sör', 0, 2, 288, 27, '', 0),
+(37, 'Dobozos Kőbányai sör', 0, 2, 215, 27, 'kepek/dobkobmeretezve.jpg', 1),
+(38, 'Dobozos Soproni sör', 0, 2, 230, 27, '', 0),
+(39, 'Fanta', 0, 2, 211, 27, '', 0),
+(40, 'Finlandia vodka', 0, 1, 2550, 27, '', 0),
+(41, 'Grants whiskey', 0, 1, 3890, 27, '', 0),
+(42, 'Jack Daniels whiskey 1,0', 0, 1, 3650, 27, '', 0),
+(43, 'Jack Daniels whiskey 0,7', 0, 1, 4200, 27, '', 0),
+(44, 'Jameson whiskey', 0, 1, 3100, 27, '', 0),
+(45, 'Jim Beam whiskey 1,0', 1, 1, 5235, 27, '', 0),
+(46, 'Jim Beam whiskey 0,7', 0, 1, 4750, 27, '', 0),
+(47, 'Kaiser vodka', 1, 1, 3989, 27, '', 0),
+(48, 'Royal vodka', 0, 1, 2365, 27, '', 0),
+(49, 'Borsodi sör üveg', 0, 2, 185, 27, '', 0),
+(50, 'Kőbányai sör üveg', 0, 2, 180, 27, '', 0),
+(51, 'Soproni sör üveg', 0, 2, 190, 27, '', 0),
+(52, 'Sörös üveg 0,5', 0, 2, 25, 0, '', 0),
+(53, 'Rekesz Braus', 0, 2, 508, 0, '', 0);
 
 -- --------------------------------------------------------
 
@@ -132,6 +153,13 @@ INSERT INTO `users` (`ID_user`, `Nev`, `Jelszo`, `Iranyitoszam`, `Utca`, `Hazsza
 --
 
 --
+-- Indexes for table `kategoriak`
+--
+ALTER TABLE `kategoriak`
+  ADD PRIMARY KEY (`ID_kategoria`),
+  ADD UNIQUE KEY `idx_kategoria` (`kategoria`);
+
+--
 -- Indexes for table `mennyisegiegyseg`
 --
 ALTER TABLE `mennyisegiegyseg`
@@ -154,7 +182,8 @@ ALTER TABLE `termekek`
   ADD PRIMARY KEY (`ID_termek`),
   ADD UNIQUE KEY `idx_termeknev` (`Nev`),
   ADD KEY `idx_Me` (`ID_Me`),
-  ADD KEY `idx_Kep` (`Kep`);
+  ADD KEY `idx_Kep` (`Kep`),
+  ADD KEY `idx_kat` (`ID_kategoria`);
 
 --
 -- Indexes for table `users`
@@ -166,6 +195,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `kategoriak`
+--
+ALTER TABLE `kategoriak`
+  MODIFY `ID_kategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `mennyisegiegyseg`
@@ -190,6 +225,25 @@ ALTER TABLE `termekek`
 --
 ALTER TABLE `users`
   MODIFY `ID_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `rendeles`
+--
+ALTER TABLE `rendeles`
+  ADD CONSTRAINT `rendeles_ibfk_1` FOREIGN KEY (`ID_termek`) REFERENCES `termekek` (`ID_termek`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `rendeles_ibfk_2` FOREIGN KEY (`ID_user`) REFERENCES `users` (`ID_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `rendeles_ibfk_3` FOREIGN KEY (`ID_Me`) REFERENCES `mennyisegiegyseg` (`ID_Me`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `termekek`
+--
+ALTER TABLE `termekek`
+  ADD CONSTRAINT `termekek_ibfk_1` FOREIGN KEY (`ID_Me`) REFERENCES `mennyisegiegyseg` (`ID_Me`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `termekek_ibfk_2` FOREIGN KEY (`ID_kategoria`) REFERENCES `kategoriak` (`ID_kategoria`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

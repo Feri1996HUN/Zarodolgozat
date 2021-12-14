@@ -73,6 +73,13 @@ $users = $db->selectUpload();
       <li>
         <a class="fa fa-shopping-cart" href="webshop.php"></a>
       </li>
+      <li>
+          <?php
+            if(isset($_SESSION["user"])){
+                echo ('<a href="index.php"></a>');
+            }
+        ?>
+      </li>
     </ul>
   </nav>
   

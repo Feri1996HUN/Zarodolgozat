@@ -5,21 +5,9 @@ require "db.php";
 $uzen = "";
 $tomb = null;
 
-// session törlése, ha valahol beragadt a session változó
-if (isset($_SESSION["user"])){
-    session_destroy();
-}
+session_start();
 
 ?>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -55,6 +43,13 @@ if (isset($_SESSION["user"])){
   </div>
   <nav>
     <ul>
+    <li>
+        <a><?php
+            if(isset($_SESSION["user"])){
+                echo ('Üdv, '.$_SESSION["user"]);
+            }
+        ?></a>
+      </li>
       <li>
         <a href="index.php">Főoldal</a>
       </li>
@@ -72,6 +67,13 @@ if (isset($_SESSION["user"])){
       </li>
       <li>
         <a class="fa fa-shopping-cart" href="kosar.php"></a>
+      </li>
+      <li>
+          <?php
+            if(isset($_SESSION["user"])){
+                echo ('<a href="index.php">Kijelentkezés</a>');
+            }
+        ?>
       </li>
     </ul>
   </nav>
