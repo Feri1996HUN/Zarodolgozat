@@ -1,4 +1,16 @@
+<?php
+require "db.php";
 
+// üzenet változója meg tömb
+$uzen = "";
+$tomb = null;
+
+// session törlése, ha valahol beragadt a session változó
+if (isset($_SESSION["user"])){
+    session_destroy();
+}
+
+?>
 
 
 
@@ -55,7 +67,7 @@
         <a href="webshop.php">Webshop</a>
       </li>
       <li>
-        <a class="fa fa-shopping-cart" href="webshop.php"></a>
+        <a class="fa fa-shopping-cart" href="kosar.php"></a>
       </li>
     </ul>
   </nav>

@@ -23,7 +23,7 @@ class Dbconnect{
         }
     }
 
-    function LoginCheck($user, $pwd){
+    function Bejelentkezes($user, $pwd){
         $tomb = null;
 
         $res = $this->con->prepare("SELECT `Nev`, `Jelszo` FROM `users` WHERE nev = ? AND jelszo = ?");
@@ -80,25 +80,22 @@ class Dbconnect{
     return $tomb;
     }
 
-    function regisztral($user, $pwd){
-        $res = $this->con->prepare("INSERT INTO `users`(`nev`, `jelszo`) VALUES (:nev,:jelszo)");
+    function regisztracio($user, $pwd, $iranyitoszam, $utca, $hazszam, $emelet, $ajto, $email, $telefon){
+        $res = $this->con->prepare("INSERT INTO `users`(`Nev`, `Jelszo`, `Iranyitoszam`, `Utca`, `Hazszam`, `Emelet`, `Ajto`, `Email`, `Telefon`) VALUES (:nev,:jelszo,:irszam,:utca,:hsz,:em,:ajto,:email,:tel)");
 
         $res->bindparam("nev", $user);
         $res->bindparam("jelszo", $pwd);
+        $res->bindparam("irszam", $iranyitoszam);
+        $res->bindparam("utca", $utca);
+        $res->bindparam("hsz", $hazszam);
+        $res->bindparam("em", $emelet);
+        $res->bindparam("ajto", $ajto);
+        $res->bindparam("email", $email);
+        $res->bindparam("tel", $telefon);
         $res->execute();
     }
 
-    function RegisztracioCheck($user){
-        $tomb = null;   //eredmény tömb
 
-        $res = $this->con->prepare("SELECT `nev` FROM `users` WHERE nev = ?");
-        $res->bindparam(1, $user);
-        $res->execute();
-
-        if ($res->rowCount() > 0){
-            return true;
-        }else return false;
-    }
 
 }
 ?>
