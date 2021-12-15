@@ -51,34 +51,18 @@ class Dbconnect{
     return $tomb;
     }
 
-    function iktat($datum, $userid, $targy, $comment){
-        $res = $this->con->prepare("INSERT INTO `letters`(`erkezett`, `ID_user`, `targy`, `leiras`) VALUES (:erkezett,:ID_user,:targy,:leiras)");
+    function RegisztracioCheck($user){
+        $tomb = null;   //eredmény tömb
 
-        $res->bindparam("erkezett", $datum);
-        $res->bindparam("ID_user", $userid);
-        $res->bindparam("targy", $targy);
-        $res->bindparam("leiras", $comment);
-
-        $res->execute();
-    }
-
-    function lista($uid, $dattol, $datig){
-        $tomb = null;
-        $res = $this->con->prepare("SELECT * FROM letters WHERE (erkezett BETWEEN :datumtol AND :datumig) AND ID_user = :ID_user");
-
-        $res->bindparam("ID_user", $uid);
-        $res->bindparam("datumtol", $dattol);
-        $res->bindparam("datumig", $datig);
-
+        $res = $this->con->prepare("SELECT `Nev` FROM `users` WHERE Nev = ?");
+        $res->bindparam(1, $user);
         $res->execute();
 
-    // Az eredmény halmazt kimentjük a tömbbe
-    while ($row = $res->fetch()) {
-    $tomb[] = $row;
+        if ($res->rowCount() > 0){
+            return true;
+        }else return false;
     }
-    
-    return $tomb;
-    }
+
 
     function regisztracio($user, $pwd, $iranyitoszam, $utca, $hazszam, $emelet, $ajto, $email, $telefon){
         $res = $this->con->prepare("INSERT INTO `users`(`Nev`, `Jelszo`, `Iranyitoszam`, `Utca`, `Hazszam`, `Emelet`, `Ajto`, `Email`, `Telefon`) VALUES (:nev,:jelszo,:irszam,:utca,:hsz,:em,:ajto,:email,:tel)");
@@ -95,7 +79,23 @@ class Dbconnect{
         $res->execute();
     }
 
+    function rendelesek($uid, $dattol, $datig){
+        $tomb = null;
+        $res = $this->con->prepare("SELECT * FROM letters WHERE (erkezett BETWEEN :datumtol AND :datumig) AND ID_user = :ID_user");
 
+        $res->bindparam("ID_user", $uid);
+        $res->bindparam("datumtol", $dattol);
+        $res->bindparam("datumig", $datig);
+
+        $res->execute();
+
+    // Az eredmény halmazt kimentjük a tömbbe
+    while ($row = $res->fetch()) {
+    $tomb[] = $row;
+    }
+    
+    return $tomb;
+    }
 
 }
 ?>

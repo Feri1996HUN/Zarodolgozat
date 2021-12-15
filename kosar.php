@@ -5,21 +5,33 @@ require "db.php";
 // Ha nem akkor visszaküldöm a bejelentkezes.php-ra
 session_start();
 
-$kimutatasra = false;
-if (isset($_SESSION["user"])){
-    $user = ucfirst($_SESSION["user"]);
-}else {
-    echo "hIBa";
-    header("location: bejelentkezes.php");
+if(isset($_SESSION["user"])){
+  $belepve = true;
+}
+else{
+  header("location: bejelentkezes.php");
+}
+
+if (isset($_POST["logout"])){
+  session_unset();
+  session_destroy();
+  session_write_close();
+  setcookie(session_name(),'',0,'/');
+  session_regenerate_id(true);
+  header("location: index.php");
 }
 
 // kapcsolódás az adatbázishoz
 $db = new Dbconnect();
-$db->Connection("utinaplo");
+$db->Connection("webshop");
 
-// A $users tömb és a többi feltöltése userekkel és a többivel
-$users = $db->selectUpload();
+// letöltöm az adatokat
 
+  $userid = $_POST["cimzett"];
+  $dattol = $_POST["datumtol"];
+  $datig = $_POST["datumig"];
+
+  $levelek = $db->rendelesek($userid, $dattol, $datig);
 
 ?>
 
@@ -55,6 +67,13 @@ $users = $db->selectUpload();
   </div>
   <nav>
     <ul>
+    <li>
+        <a><?php
+            if($belepve){
+                echo ('Üdv, '.$_SESSION["user"]);
+            }
+        ?></a>
+      </li>
       <li>
         <a href="index.php">Főoldal</a>
       </li>
@@ -71,14 +90,12 @@ $users = $db->selectUpload();
         <a href="webshop.php">Webshop</a>
       </li>
       <li>
-        <a class="fa fa-shopping-cart" href="webshop.php"></a>
+        <a class="fa fa-shopping-cart" href="kosar.php"></a>
       </li>
       <li>
-          <?php
-            if(isset($_SESSION["user"])){
-                echo ('<a href="index.php"></a>');
-            }
-        ?>
+      <form action="" method="post">
+      <button type="submit" class="btn btn-danger" name="logout">Kijelentkezés</button>
+      </form>
       </li>
     </ul>
   </nav>

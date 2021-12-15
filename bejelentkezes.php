@@ -67,13 +67,6 @@ if (isset($_POST["login"])){
   </div>
   <nav>
     <ul>
-    <li>
-        <a><?php
-            if(isset($_SESSION["user"])){
-                echo ('Üdv, '.$_SESSION["user"]);
-            }
-        ?></a>
-      </li>
       <li>
         <a href="index.php">Főoldal</a>
       </li>
@@ -113,6 +106,7 @@ if (isset($_POST["login"])){
 
 <div class="container-fluid text-center">
         <div class="jumbotron" style="margin: 50px">
+        <h2>A webshop használatához be kell jelentkeznie vagy ha új felhasználó kérem regisztráljon.</h2>
             <h1>Bejelentkezés</h1>
         
         <form action="" method="post">

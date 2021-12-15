@@ -10,19 +10,36 @@ if (isset($_SESSION["user"])){
     session_destroy();
 }
 
+// Ellenőrzöm, hogy az odlal a regisztrációs gombbal lett-e elküldve
+if (isset($_POST["regisztraciogomb"])){
+  // Kimentem a küldött adatokat
+  $user = $_POST["nev"];
+  $pwd = $_POST["pwd"];
+  $iranyitoszam = $_POST["irszam"];
+  $utca = $_POST["utca"];
+  $hazszam = $_POST["hazszam"];
+  $emelet = $_POST["emelet"];
+  $ajto = $_POST["ajto"];
+  $email = $_POST["email"];
+  $telefon = $_POST["tel"];
+
+  // kapcsolódás az adatbázishoz
+  $db = new Dbconnect();
+  $db->Connection("webshop");
+
+  // Ellenőrizzük, hogy már létező adatokat visz fel vagy nem
+  if ($db->RegisztracioCheck($reguser)){
+      $db = null;
+      $uzen = "Már regisztráltak ilyen adatokkal!";
+  }
+  else {
+      $db->regisztracio($user, $pwd, $iranyitoszam, $utca, $hazszam, $emelet, $ajto, $email, $telefon);
+      $uzen = "Sikeres regisztráció!";
+      header("location: bejelentkezes.php");
+  }
+}
+
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="hu">
@@ -127,7 +144,7 @@ if (isset($_SESSION["user"])){
                     <input type="text" class="form-control" name="tel" id="tel" placeholder="Telefon" required>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" name="regisztraciogom" style="margin: 50px">Regisztráció</button>
+            <button type="submit" class="btn btn-primary" name="regisztraciogomb" style="margin: 50px">Regisztráció</button>
             </div>
             <div>
                 <h3><?php echo $uzen ?><h3>

@@ -4,8 +4,26 @@ require "db.php";
 // üzenet változója meg tömb
 $uzen = "";
 $tomb = null;
+$belepve = false;
 
 session_start();
+
+if(isset($_SESSION["user"])){
+  $belepve = true;
+}
+else{
+  header("location: bejelentkezes.php");
+}
+
+if (isset($_POST["logout"])){
+  session_unset();
+  session_destroy();
+  session_write_close();
+  setcookie(session_name(),'',0,'/');
+  session_regenerate_id(true);
+  header("location: index.php");
+}
+
 
 ?>
 
@@ -45,7 +63,7 @@ session_start();
     <ul>
     <li>
         <a><?php
-            if(isset($_SESSION["user"])){
+            if($belepve){
                 echo ('Üdv, '.$_SESSION["user"]);
             }
         ?></a>
@@ -69,11 +87,9 @@ session_start();
         <a class="fa fa-shopping-cart" href="kosar.php"></a>
       </li>
       <li>
-          <?php
-            if(isset($_SESSION["user"])){
-                echo ('<a href="index.php">Kijelentkezés</a>');
-            }
-        ?>
+      <form action="" method="post">
+      <button type="submit" class="btn btn-danger" name="logout">Kijelentkezés</button>
+      </form>
       </li>
     </ul>
   </nav>
@@ -111,6 +127,7 @@ session_start();
   
 <!-- Sörök -->
 
+<form action="" method="post">
 <div class="collapse" id="sorok">
   <div class="card card-body">
   <div class="kontenerkategoriak">
@@ -118,8 +135,9 @@ session_start();
   <div class="row">
     <div class="col4">
       <img src="kepek/dobkobmeretezve.jpg">
-      <h6>Dob. Kőbányai sör</h6>
+      <h6>Dob. Kőbányai sör</h6> 
       <p>230 FT</p>
+      <input type="number" name="dobkobme" id="dobkobme" style="width: 100px;"><label style="padding-left: 15px;">Db</label><label><a class="fa fa-shopping-cart" style="color: red;" id="kosarba"></a></label>
     </div>
     <div class="col4">
       <img src="kepek/uvegkobmeretezve.jpg">
@@ -152,6 +170,7 @@ session_start();
 </div>  
 </div>
 </div>
+</form>
 
 <!-- Minőségi italok -->
 
