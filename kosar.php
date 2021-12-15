@@ -25,14 +25,6 @@ if (isset($_POST["logout"])){
 $db = new Dbconnect();
 $db->Connection("webshop");
 
-// letöltöm az adatokat
-
-  $userid = $_POST["cimzett"];
-  $dattol = $_POST["datumtol"];
-  $datig = $_POST["datumig"];
-
-  $levelek = $db->rendelesek($userid, $dattol, $datig);
-
 ?>
 
 

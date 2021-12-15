@@ -51,6 +51,24 @@ class Dbconnect{
     return $tomb;
     }
 
+    function termekeksorok($kategoria){
+        $tomb = null;
+    
+        $res = $this->con->prepare("SELECT `Nev`, `Eladar`, `Kep`, `ID_termek` FROM `termekek` WHERE ID_kategoria = ?");
+        $res->bindparam(1, $kategoria);
+        $res->execute();
+    
+        while ($row = $res->fetch()) {
+            $tomb[] = $row;
+        }
+        
+        return $tomb;
+    }
+
+
+
+
+
     function RegisztracioCheck($user){
         $tomb = null;   //eredmény tömb
 
@@ -96,6 +114,8 @@ class Dbconnect{
     
     return $tomb;
     }
+
+
 
 }
 ?>

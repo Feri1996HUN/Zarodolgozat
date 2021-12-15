@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2021 at 07:25 PM
+-- Generation Time: Dec 15, 2021 at 08:37 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -76,6 +76,28 @@ CREATE TABLE `rendeles` (
   `ID_Me` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_hungarian_ci;
 
+--
+-- Dumping data for table `rendeles`
+--
+
+INSERT INTO `rendeles` (`ID_rendeles`, `ID_user`, `ID_termek`, `Mennyiseg`, `ID_Me`) VALUES
+(4, 3, 40, 52, 2),
+(6, 3, 47, 2, 1),
+(7, 3, 48, 3, 1),
+(8, 4, 37, 24, 2),
+(9, 4, 38, 12, 2),
+(10, 5, 45, 2, 1),
+(11, 5, 42, 4, 1),
+(12, 5, 40, 1, 1),
+(13, 5, 41, 1, 1),
+(14, 1, 36, 48, 2),
+(15, 3, 51, 40, 2),
+(22, 1, 39, 12, 2),
+(23, 3, 38, 48, 2),
+(24, 1, 35, 12, 2),
+(41, 1, 40, 2, 1),
+(42, 3, 50, 40, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -87,8 +109,7 @@ CREATE TABLE `termekek` (
   `Nev` varchar(30) COLLATE utf16_hungarian_ci NOT NULL,
   `Mennyiseg` float NOT NULL,
   `ID_Me` int(11) NOT NULL,
-  `Nettoar` int(10) NOT NULL,
-  `Afa` int(2) NOT NULL DEFAULT 27,
+  `Eladar` int(10) NOT NULL,
   `Kep` varchar(100) COLLATE utf16_hungarian_ci NOT NULL,
   `ID_kategoria` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_hungarian_ci;
@@ -97,26 +118,24 @@ CREATE TABLE `termekek` (
 -- Dumping data for table `termekek`
 --
 
-INSERT INTO `termekek` (`ID_termek`, `Nev`, `Mennyiseg`, `ID_Me`, `Nettoar`, `Afa`, `Kep`, `ID_kategoria`) VALUES
-(35, 'Coca Cola', 0, 2, 150, 27, '', 0),
-(36, 'Dobozos Borsodi sör', 0, 2, 288, 27, '', 0),
-(37, 'Dobozos Kőbányai sör', 0, 2, 215, 27, 'kepek/dobkobmeretezve.jpg', 1),
-(38, 'Dobozos Soproni sör', 0, 2, 230, 27, '', 0),
-(39, 'Fanta', 0, 2, 211, 27, '', 0),
-(40, 'Finlandia vodka', 0, 1, 2550, 27, '', 0),
-(41, 'Grants whiskey', 0, 1, 3890, 27, '', 0),
-(42, 'Jack Daniels whiskey 1,0', 0, 1, 3650, 27, '', 0),
-(43, 'Jack Daniels whiskey 0,7', 0, 1, 4200, 27, '', 0),
-(44, 'Jameson whiskey', 0, 1, 3100, 27, '', 0),
-(45, 'Jim Beam whiskey 1,0', 1, 1, 5235, 27, '', 0),
-(46, 'Jim Beam whiskey 0,7', 0, 1, 4750, 27, '', 0),
-(47, 'Kaiser vodka', 1, 1, 3989, 27, '', 0),
-(48, 'Royal vodka', 0, 1, 2365, 27, '', 0),
-(49, 'Borsodi sör üveg', 0, 2, 185, 27, '', 0),
-(50, 'Kőbányai sör üveg', 0, 2, 180, 27, '', 0),
-(51, 'Soproni sör üveg', 0, 2, 190, 27, '', 0),
-(52, 'Sörös üveg 0,5', 0, 2, 25, 0, '', 0),
-(53, 'Rekesz Braus', 0, 2, 508, 0, '', 0);
+INSERT INTO `termekek` (`ID_termek`, `Nev`, `Mennyiseg`, `ID_Me`, `Eladar`, `Kep`, `ID_kategoria`) VALUES
+(35, 'Coca Cola', 0, 2, 150, 'kepek/cocacolameretezve.jpg', 3),
+(36, 'Dobozos Borsodi sör', 0, 2, 288, 'kepek/dobborsmeretezve.jpg', 1),
+(37, 'Dobozos Kőbányai sör', 0, 2, 215, 'kepek/dobkobmeretezve.jpg', 1),
+(38, 'Dobozos Soproni sör', 0, 2, 230, 'kepek/dobsopmeretezve.jpg', 1),
+(39, 'Fanta', 0, 2, 211, 'kepek/fantameretezve.jpg', 3),
+(40, 'Finlandia vodka', 0, 1, 2550, 'kepek/finlandiameretezve.jpg', 2),
+(41, 'Grants whiskey', 0, 1, 3890, 'kepek/grantsmeretezve.jpg', 2),
+(42, 'Jack Daniels whiskey 0,5', 0, 1, 3650, 'kepek/jack05meretezve.jpg', 2),
+(43, 'Jack Daniels whiskey 0,7', 0, 1, 4200, 'kepek/jack07meretezve.jpg', 2),
+(44, 'Jameson whiskey', 0, 1, 3100, 'kepek/jamesonmeretezve.jpg', 2),
+(45, 'Jim Beam whiskey 1,0', 1, 1, 5235, 'kepek/jim1meretezve.jpg', 2),
+(46, 'Jim Beam whiskey 0,7', 0, 1, 4750, 'kepek/jim07meretezve.jpg', 2),
+(47, 'Kaiser vodka', 1, 1, 3989, 'kepek/kaisermeretezve.jpg', 2),
+(48, 'Royal vodka', 0, 1, 2365, 'kepek/royalvodkameretezve.jpg', 2),
+(49, 'Borsodi sör üveg', 0, 2, 185, 'kepek/uvegborsmretezve.jpg', 1),
+(50, 'Kőbányai sör üveg', 0, 2, 180, 'kepek/uvegkobmeretezve.jpg', 1),
+(51, 'Soproni sör üveg', 0, 2, 190, 'kepek/uvegsopmeretezve.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -146,7 +165,8 @@ INSERT INTO `users` (`ID_user`, `Nev`, `Jelszo`, `Iranyitoszam`, `Utca`, `Hazsza
 (2, 'Nagy Péter', '123456', '4050', 'Tölgyfa utca', '21', '', '', '123nagyp@googlemail.com', '+3620817788'),
 (3, 'Harc András', '123456', '4011', 'Petőfi utca', '4', '2', '28', 'harcos@harc.com', '+3611112222'),
 (4, 'Kiss Zsófi', '123456', '4027', 'Fa utca', '77', '8', '1', 'email@nincsmail.com', '+3699887766'),
-(5, 'Pap József', '123456', '4011', 'Tető utca', '56', '4', '4', 'papp@papok.com', '+3666554411');
+(5, 'Pap József', '123456', '4011', 'Tető utca', '56', '4', '4', 'papp@papok.com', '+3666554411'),
+(6, 'Második Géza', '123456', '4058', 'Sip', '23', '', '', 'nem@letezo@gmail.com', '+3690254145');
 
 --
 -- Indexes for dumped tables
@@ -212,7 +232,7 @@ ALTER TABLE `mennyisegiegyseg`
 -- AUTO_INCREMENT for table `rendeles`
 --
 ALTER TABLE `rendeles`
-  MODIFY `ID_rendeles` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_rendeles` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `termekek`
@@ -224,7 +244,7 @@ ALTER TABLE `termekek`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

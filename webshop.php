@@ -1,10 +1,12 @@
 <?php
 require "db.php";
 
-// üzenet változója meg tömb
-$uzen = "";
+//  Változók
 $tomb = null;
-$belepve = false;
+$kosarid = null;
+$kosarme = 0;
+$i = 0;
+
 
 session_start();
 
@@ -23,6 +25,23 @@ if (isset($_POST["logout"])){
   session_regenerate_id(true);
   header("location: index.php");
 }
+
+  // kapcsolódás az adatbázishoz
+  $db = new Dbconnect();
+  $db->Connection("webshop");
+
+$kategoriavalaszt1 = $db->termekeksorok(1);
+$kategoriavalaszt2 = $db->termekeksorok(2);
+$kategoriavalaszt3 = $db->termekeksorok(3);
+
+
+if (isset($_POST[$i])){
+  foreach ($_POST[$i] as $key) {
+    var_dump($key);
+  }
+
+}
+
 
 
 ?>
@@ -133,39 +152,16 @@ if (isset($_POST["logout"])){
   <div class="kontenerkategoriak">
     <h2 class="akcio">Sörök</h2>
   <div class="row">
-    <div class="col4">
-      <img src="kepek/dobkobmeretezve.jpg">
-      <h6>Dob. Kőbányai sör</h6> 
-      <p>230 FT</p>
-      <input type="number" name="dobkobme" id="dobkobme" style="width: 100px;"><label style="padding-left: 15px;">Db</label><label><a class="fa fa-shopping-cart" style="color: red;" id="kosarba"></a></label>
-    </div>
-    <div class="col4">
-      <img src="kepek/uvegkobmeretezve.jpg">
-      <h6>Kőbányai sör üveges</h6>
-      <p>205 FT</p>
-    </div>    <div class="col4">
-      <img src="kepek/dobborsmeretezve.jpg">
-      <h6>Dob. Borsodi sör</h6>
-      <p>200 FT</p>
-    </div>    <div class="col4">
-      <img src="kepek/uvegborsmretezve.jpg">
-      <h6>Borsodi sör üveges</h6>
-      <p>195 FT</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col4">
-      <img src="kepek/dobsopmeretezve.jpg">
-      <h6>Dob. Soproni sör</h6>
-      <p>230 FT</p>
-    </div>
-    <div class="col4">
-      <img src="kepek/uvegsopmeretezve.jpg">
-      <h6>Soproni sör üveges</h6>
-      <p>205 FT</p>
-    </div>    <div class="col4">
-    </div>    <div class="col4">
-    </div>
+    
+    <?php
+    if($kategoriavalaszt1){
+
+        foreach ($kategoriavalaszt1 as $key) {
+            print ("<div class='col4'><img src=".$key['Kep']."><h6>".$key['Nev']."</h6><p>".$key['Eladar']." Ft</p><input type='number' name=".$i." id=".$i." min='0'  style='width: 100px;'><label>->Db-><button type='submit' class='btn btn-danger' name='kosarba'>Kosár</button></label></div>");
+          $i++;
+          }
+    }
+        ?>
   </div>
 </div>  
 </div>
@@ -174,101 +170,47 @@ if (isset($_POST["logout"])){
 
 <!-- Minőségi italok -->
 
+<form action="" method="post">
 <div class="collapse" id="minital">
   <div class="card card-body">
   <div class="kontenerkategoriak">
   <h2 class="akcio">Minőségi italok</h2>
   <div class="row">
-    <div class="col4">
-      <img src="kepek/finlandiameretezve.jpg">
-      <h6>Finlandia vodka 0,7</h6>
-      <p>2300 FT</p>
-    </div>
-    <div class="col4">
-      <img src="kepek/grantsmeretezve.jpg">
-      <h6>Grants whiskey 0,7</h6>
-      <p>2050 FT</p>
-    </div>    <div class="col4">
-      <img src="kepek/jack05meretezve.jpg">
-      <h6>Jack Daniels whiskey 0,5</h6>
-      <p>2000 FT</p>
-    </div>    <div class="col4">
-      <img src="kepek/jack07meretezve.jpg">
-      <h6>Jack Daniels whiskey 0,7</h6>
-      <p>19500 FT</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col4">
-      <img src="kepek/jamesonmeretezve.jpg">
-      <h6>Jameson whiskey 0,7</h6>
-      <p>2300 FT</p>
-    </div>
-    <div class="col4">
-      <img src="kepek/jim1meretezve.jpg">
-      <h6>Jim Beam whiskey 1,0</h6>
-      <p>2050 FT</p>
-    </div> 
-    <div class="col4">
-      <img src="kepek/jim07meretezve.jpg">
-      <h6>Jim Beam whiskey 0,7</h6>
-      <p>2050 FT</p>  
-    </div>    
-    <div class="col4">
-      <img src="kepek/kaisermeretezve.jpg">
-      <h6>Kaiser vodka 1,0</h6>
-      <p>2050 FT</p>  
-    </div>
-  </div>
-  <div class="row">
-    <div class="col4">
-      <img src="kepek/royalvodkameretezve.jpg">
-      <h6>Royal vodka 0,5</h6>
-      <p>2300 FT</p>
-    </div>
-    <div class="col4"></div>
-    <div class="col4"></div>
-    <div class="col4"></div>
+  <?php
+    if($kategoriavalaszt2){
+
+        foreach ($kategoriavalaszt2 as $key) {
+            print ("<div class='col4'><img src=".$key['Kep']."><h6>".$key['Nev']."</h6><p>".$key['Eladar']." Ft</p><input type='number' name=".$key['ID_termek']." id=".$key['ID_termek']." style='width: 100px;'><label>-Db-></label><label><button type='submit' class='btn btn-danger' name='kosarba'>Kosár</button></label></div>");
+        }
+    }
+        ?>
     </div>
 </div>  
 </div>
 </div>
-
+</form>
 <!-- Üditők -->
 
+<form action="" method="post">
 <div class="collapse" id="uditok">
   <div class="card card-body">
   <div class="kontenerkategoriak">
   <h2 class="akcio">Üditők</h2>
   <div class="row">
-    <div class="col4">
-      <img src="kepek/cocacolameretezve.jpg">
-      <h6>Coca cola 0,5</h6>
-      <p>230 FT</p>
-    </div>
-    <div class="col4">
-      <img src="kepek/fantameretezve.jpg">
-      <h6>Fanta 0,5</h6>
-      <p>200 FT</p>
-    </div>    <div class="col4">
-    </div>    <div class="col4">
+  <?php
+    if($kategoriavalaszt3){
+
+        foreach ($kategoriavalaszt3 as $key) {
+            print ("<div class='col4'><img src=".$key['Kep']."><h6>".$key['Nev']."</h6><p>".$key['Eladar']." Ft</p><input type='number' name=".$key['ID_termek']." id=".$key['ID_termek']." style='width: 100px;'><label>-Db-></label><label><button type='submit' class='btn btn-danger' name='kosarba'>Kosár</button></label></div>");
+        }
+    }
+        ?>
     </div>
   </div>
 </div>  
 </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
+</form>
 <!-- Lábléc -->
 
 <div class="lablec">
