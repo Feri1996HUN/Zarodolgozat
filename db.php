@@ -26,7 +26,7 @@ class Dbconnect{
     function Bejelentkezes($user, $pwd){
         $tomb = null;
 
-        $res = $this->con->prepare("SELECT `Nev`, `Jelszo` FROM `users` WHERE nev = ? AND jelszo = ?");
+        $res = $this->con->prepare("SELECT `Nev`, `Jelszo`, `ID_user` FROM `users` WHERE nev = ? AND jelszo = ?");
         $res->bindparam(1, $user);
         $res->bindparam(2, $pwd);
         $res->execute();
@@ -65,7 +65,18 @@ class Dbconnect{
         return $tomb;
     }
 
-
+    function Kategoriak(){
+        $tomb = null;
+    
+        $res = $this->con->prepare("SELECT `ID_kategoria`, `kategoria` FROM `kategoriak`");
+        $res->execute();
+    
+        while ($row = $res->fetch()) {
+            $tomb[] = $row;
+        }
+        
+        return $tomb;
+    }
 
 
 
@@ -97,7 +108,7 @@ class Dbconnect{
         $res->execute();
     }
 
-    function rendelesek($uid){
+    function Rendelesek($uid){
         $tomb = null;
         $res = $this->con->prepare("SELECT r.ID_user, r.ID_termek, r.Mennyiseg, t.Nev, t.Eladar FROM rendeles AS r JOIN termekek AS t ON t.ID_termek = r.ID_termek WHERE r.ID_user = :userid");
 
@@ -113,6 +124,38 @@ class Dbconnect{
     return $tomb;
     }
 
+    function Mennyisegiegy($uid){
+        $tomb = null;
+        $res = $this->con->prepare("SELECT r.ID_user, r.ID_termek, r.Mennyiseg, t.Nev, t.Eladar FROM rendeles AS r JOIN termekek AS t ON t.ID_termek = r.ID_termek WHERE r.ID_user = :userid");
+
+        $res->bindparam("userid", $uid);
+
+        $res->execute();
+
+    // Az eredmény halmazt kimentjük a tömbbe
+    while ($row = $res->fetch()) {
+    $tomb[] = $row;
+    }
+    
+    return $tomb;
+    }
+
+
+
+    function Rendelesfeltolt($iduser, $idtermek, $mennyiseg){
+        $res = $this->con->prepare("INSERT INTO `rendeles`(`ID_user`, `ID_termek`, `Mennyiseg`) VALUES (:iduser,:idtermek,:mennyiseg)");
+
+        $res->bindparam("iduser", $iduser);
+        $res->bindparam("idtermek", $idtermek);
+        $res->bindparam("mennyiseg", $mennyiseg);
+       // var_dump($iduser, $idtermek, $mennyiseg);
+        $res->execute();
+    }
+
+
+
+
+    
 
 
 }

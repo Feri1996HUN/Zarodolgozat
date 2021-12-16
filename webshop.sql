@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2021 at 08:37 PM
+-- Generation Time: Dec 16, 2021 at 08:23 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -73,30 +73,45 @@ CREATE TABLE `rendeles` (
   `ID_user` int(11) NOT NULL,
   `ID_termek` int(11) NOT NULL,
   `Mennyiseg` int(11) NOT NULL,
-  `ID_Me` int(11) NOT NULL
+  `datum` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_hungarian_ci;
 
 --
 -- Dumping data for table `rendeles`
 --
 
-INSERT INTO `rendeles` (`ID_rendeles`, `ID_user`, `ID_termek`, `Mennyiseg`, `ID_Me`) VALUES
-(4, 3, 40, 52, 2),
-(6, 3, 47, 2, 1),
-(7, 3, 48, 3, 1),
-(8, 4, 37, 24, 2),
-(9, 4, 38, 12, 2),
-(10, 5, 45, 2, 1),
-(11, 5, 42, 4, 1),
-(12, 5, 40, 1, 1),
-(13, 5, 41, 1, 1),
-(14, 1, 36, 48, 2),
-(15, 3, 51, 40, 2),
-(22, 1, 39, 12, 2),
-(23, 3, 38, 48, 2),
-(24, 1, 35, 12, 2),
-(41, 1, 40, 2, 1),
-(42, 3, 50, 40, 2);
+INSERT INTO `rendeles` (`ID_rendeles`, `ID_user`, `ID_termek`, `Mennyiseg`, `datum`) VALUES
+(4, 3, 40, 52, '2021-12-16 18:18:28'),
+(6, 3, 47, 2, '2021-12-16 18:18:28'),
+(7, 3, 48, 3, '2021-12-16 18:18:28'),
+(8, 4, 37, 24, '2021-12-16 18:18:28'),
+(9, 4, 38, 12, '2021-12-16 18:18:28'),
+(10, 5, 45, 2, '2021-12-16 18:18:28'),
+(11, 5, 42, 4, '2021-12-16 18:18:28'),
+(12, 5, 40, 1, '2021-12-16 18:18:28'),
+(13, 5, 41, 1, '2021-12-16 18:18:28'),
+(14, 1, 36, 48, '2021-12-16 18:18:28'),
+(15, 3, 51, 40, '2021-12-16 18:18:28'),
+(22, 1, 39, 12, '2021-12-16 18:18:28'),
+(23, 3, 38, 48, '2021-12-16 18:18:28'),
+(24, 1, 35, 12, '2021-12-16 18:18:28'),
+(41, 1, 40, 2, '2021-12-16 18:18:28'),
+(42, 3, 50, 40, '2021-12-16 18:18:28'),
+(47, 1, 39, 10, '2021-12-16 18:27:53'),
+(49, 6, 36, 18, '2021-12-16 18:43:33'),
+(50, 6, 37, 14, '2021-12-16 18:43:33'),
+(51, 6, 38, 0, '2021-12-16 18:43:33'),
+(52, 6, 49, 0, '2021-12-16 18:43:33'),
+(53, 6, 50, 7, '2021-12-16 18:43:33'),
+(54, 6, 51, 0, '2021-12-16 18:43:33'),
+(55, 3, 51, 9, '2021-12-16 18:47:24'),
+(56, 3, 37, 19, '2021-12-16 18:47:49'),
+(57, 3, 38, 8, '2021-12-16 18:47:49'),
+(58, 6, 35, 10, '2021-12-16 18:59:26'),
+(59, 6, 42, 2, '2021-12-16 19:01:48'),
+(60, 6, 43, 1, '2021-12-16 19:01:48'),
+(61, 6, 38, 5, '2021-12-16 19:01:48'),
+(62, 6, 39, 2, '2021-12-16 19:01:48');
 
 -- --------------------------------------------------------
 
@@ -192,8 +207,7 @@ ALTER TABLE `mennyisegiegyseg`
 ALTER TABLE `rendeles`
   ADD PRIMARY KEY (`ID_rendeles`),
   ADD KEY `idx_user` (`ID_user`),
-  ADD KEY `idx_termek` (`ID_termek`),
-  ADD KEY `idx_Me` (`ID_Me`);
+  ADD KEY `idx_termek` (`ID_termek`);
 
 --
 -- Indexes for table `termekek`
@@ -232,7 +246,7 @@ ALTER TABLE `mennyisegiegyseg`
 -- AUTO_INCREMENT for table `rendeles`
 --
 ALTER TABLE `rendeles`
-  MODIFY `ID_rendeles` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `ID_rendeles` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `termekek`
@@ -255,8 +269,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `rendeles`
   ADD CONSTRAINT `rendeles_ibfk_1` FOREIGN KEY (`ID_termek`) REFERENCES `termekek` (`ID_termek`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `rendeles_ibfk_2` FOREIGN KEY (`ID_user`) REFERENCES `users` (`ID_user`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `rendeles_ibfk_3` FOREIGN KEY (`ID_Me`) REFERENCES `mennyisegiegyseg` (`ID_Me`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `rendeles_ibfk_2` FOREIGN KEY (`ID_user`) REFERENCES `users` (`ID_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `termekek`

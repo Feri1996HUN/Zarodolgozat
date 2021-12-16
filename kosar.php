@@ -7,7 +7,7 @@ session_start();
 
 if(isset($_SESSION["user"])){
   $belepve = true;
-  $uid = $_SESSION["user"];
+  $uid = $_SESSION["userid"];
 }
 else{
   header("location: bejelentkezes.php");
@@ -28,9 +28,6 @@ $db->Connection("webshop");
 
 $users = $db->selectUpload();
 $rendelestomb = $db->rendelesek($uid);
-
-
-
 
 
 
@@ -166,15 +163,16 @@ $rendelestomb = $db->rendelesek($uid);
           echo "Nincsen korábbi rendelése!";
         }
         else {
-          print("<table class='table table-hover'><thead><tr><th scope='col'>#</th><th scope='col'>First</th><th scope='col'>Last</th><th scope='col'>Handle</th></tr></thead><tbody>");
-
+          print("<table class='table table-hover'><thead><tr><th scope='col'>#</th><th scope='col'>Termék neve</th><th scope='col'>Mennyiség</th><th scope='col'>Összár</th></tr></thead><tbody>");
+          $i = 1;
         foreach ($rendelestomb as $key) {
-            print("<tr><th scope="row">1</th>".$key['Datum']."</td><td>".$key['Honnan']."</td><td>".$key['Hova']."</td><td>".$key['km']."</td></tr>");
+            print("<tr><th scope='row'>.$i.</th><td>".$key['t.Nev']."</td><td>".$key['r.Mennyiseg']."</td><td>".$key['t.Eladar']."</td></tr>");
+            $i++;
         }
       }
     
         ?>
-
+ 
 
 
 

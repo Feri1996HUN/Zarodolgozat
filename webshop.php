@@ -30,23 +30,45 @@ if (isset($_POST["logout"])){
   $db = new Dbconnect();
   $db->Connection("webshop");
 
+$kategoriak = $db->Kategoriak();
 $kategoriavalaszt1 = $db->termekeksorok(1);
 $kategoriavalaszt2 = $db->termekeksorok(2);
 $kategoriavalaszt3 = $db->termekeksorok(3);
 
+//var_dump($_SESSION["userid"]);
 
-if (isset($_POST[$i])){
-  foreach ($_POST[$i] as $key) {
-    var_dump($key);
+// Kosár feltöltése
+
+foreach ($kategoriak as $key) {
+
+  $kategoriavalaszt = $db->termekeksorok($key["ID_kategoria"]);
+  foreach ($kategoriavalaszt as $key) {
+    $azonositok = $key["ID_termek"];
   }
 
+    if (isset($_POST["kosarba"])){
+  
+        foreach ($kategoriavalaszt as $key) {
+          $azonositok = $key["ID_termek"];
+          if (isset($_POST[$azonositok])) {
+            $kosartartalom = array($azonositok, $_POST[$azonositok]);
+            $iduser = $_SESSION["userid"];
+            $idtermek = $kosartartalom[0];
+            $mennyiseg = $kosartartalom[1];
+            if ($mennyiseg > 0){
+            $db->Rendelesfeltolt($iduser, $idtermek, $mennyiseg);
+            
+            }
+            header("location: kosar.php");
+          }
+    }
+}
 }
 
 
 
+
 ?>
-
-
 
 
 <!DOCTYPE html>
@@ -157,8 +179,7 @@ if (isset($_POST[$i])){
     if($kategoriavalaszt1){
 
         foreach ($kategoriavalaszt1 as $key) {
-            print ("<div class='col4'><img src=".$key['Kep']."><h6>".$key['Nev']."</h6><p>".$key['Eladar']." Ft</p><input type='number' name=".$i." id=".$i." min='0'  style='width: 100px;'><label>->Db-><button type='submit' class='btn btn-danger' name='kosarba'>Kosár</button></label></div>");
-          $i++;
+            print ("<div class='col4'><img src=".$key['Kep']."><h6>".$key['Nev']."</h6><p>".$key['Eladar']." Ft</p><input type='number' name=".$key['ID_termek']." id=".$key['ID_termek']." min='0' style='width: 100px;'><label>->Db-></label></div>");
           }
     }
         ?>
@@ -166,11 +187,10 @@ if (isset($_POST[$i])){
 </div>  
 </div>
 </div>
-</form>
 
 <!-- Minőségi italok -->
 
-<form action="" method="post">
+
 <div class="collapse" id="minital">
   <div class="card card-body">
   <div class="kontenerkategoriak">
@@ -180,7 +200,7 @@ if (isset($_POST[$i])){
     if($kategoriavalaszt2){
 
         foreach ($kategoriavalaszt2 as $key) {
-            print ("<div class='col4'><img src=".$key['Kep']."><h6>".$key['Nev']."</h6><p>".$key['Eladar']." Ft</p><input type='number' name=".$key['ID_termek']." id=".$key['ID_termek']." style='width: 100px;'><label>-Db-></label><label><button type='submit' class='btn btn-danger' name='kosarba'>Kosár</button></label></div>");
+            print ("<div class='col4'><img src=".$key['Kep']."><h6>".$key['Nev']."</h6><p>".$key['Eladar']." Ft</p><input type='number' name=".$key['ID_termek']." id=".$key['ID_termek']." min='0' style='width: 100px;'><label>->Db-></label></div>");
         }
     }
         ?>
@@ -188,10 +208,10 @@ if (isset($_POST[$i])){
 </div>  
 </div>
 </div>
-</form>
+
 <!-- Üditők -->
 
-<form action="" method="post">
+
 <div class="collapse" id="uditok">
   <div class="card card-body">
   <div class="kontenerkategoriak">
@@ -201,7 +221,7 @@ if (isset($_POST[$i])){
     if($kategoriavalaszt3){
 
         foreach ($kategoriavalaszt3 as $key) {
-            print ("<div class='col4'><img src=".$key['Kep']."><h6>".$key['Nev']."</h6><p>".$key['Eladar']." Ft</p><input type='number' name=".$key['ID_termek']." id=".$key['ID_termek']." style='width: 100px;'><label>-Db-></label><label><button type='submit' class='btn btn-danger' name='kosarba'>Kosár</button></label></div>");
+          print ("<div class='col4'><img src=".$key['Kep']."><h6>".$key['Nev']."</h6><p>".$key['Eladar']." Ft</p><input type='number' name=".$key['ID_termek']." id=".$key['ID_termek']." min='0' style='width: 100px;'><label>->Db-></label></div>");
         }
     }
         ?>
@@ -210,7 +230,13 @@ if (isset($_POST[$i])){
 </div>  
 </div>
 </div>
+
+
+
+<button type='submit' class='btn btn-danger' name='kosarba'>Kosár</button>
 </form>
+
+
 <!-- Lábléc -->
 
 <div class="lablec">
@@ -223,6 +249,19 @@ if (isset($_POST[$i])){
 
   </div>
 </div>
+
+
+<script>
+  const kosar = [];
+    function Kosaram($azonositok) {
+      var kosarazon = Document.getElementById($azonositok);
+      var_dump(kosarazon);
+    }
+
+</script>
+
+
+
 
 </body>
 </html>
