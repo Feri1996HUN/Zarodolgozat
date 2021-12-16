@@ -7,6 +7,7 @@ session_start();
 
 if(isset($_SESSION["user"])){
   $belepve = true;
+  $uid = $_SESSION["user"];
 }
 else{
   header("location: bejelentkezes.php");
@@ -24,6 +25,14 @@ if (isset($_POST["logout"])){
 // kapcsolódás az adatbázishoz
 $db = new Dbconnect();
 $db->Connection("webshop");
+
+$users = $db->selectUpload();
+$rendelestomb = $db->rendelesek($uid);
+
+
+
+
+
 
 ?>
 
@@ -148,6 +157,31 @@ $db->Connection("webshop");
 <div class="kontenerkategoriak">
 <h2 class="akcio">Korábbi rendeléseim: </h2>
 </div>
+
+<?php
+    
+        
+       
+        if (is_null($rendelestomb)){
+          echo "Nincsen korábbi rendelése!";
+        }
+        else {
+          print("<table class='table table-hover'><thead><tr><th scope='col'>#</th><th scope='col'>First</th><th scope='col'>Last</th><th scope='col'>Handle</th></tr></thead><tbody>");
+
+        foreach ($rendelestomb as $key) {
+            print("<tr><th scope="row">1</th>".$key['Datum']."</td><td>".$key['Honnan']."</td><td>".$key['Hova']."</td><td>".$key['km']."</td></tr>");
+        }
+      }
+    
+        ?>
+
+
+
+
+
+
+
+
 
 <!-- Korábbi rendelések táblázat-->
 

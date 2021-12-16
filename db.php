@@ -97,13 +97,11 @@ class Dbconnect{
         $res->execute();
     }
 
-    function rendelesek($uid, $dattol, $datig){
+    function rendelesek($uid){
         $tomb = null;
-        $res = $this->con->prepare("SELECT * FROM letters WHERE (erkezett BETWEEN :datumtol AND :datumig) AND ID_user = :ID_user");
+        $res = $this->con->prepare("SELECT r.ID_user, r.ID_termek, r.Mennyiseg, t.Nev, t.Eladar FROM rendeles AS r JOIN termekek AS t ON t.ID_termek = r.ID_termek WHERE r.ID_user = :userid");
 
-        $res->bindparam("ID_user", $uid);
-        $res->bindparam("datumtol", $dattol);
-        $res->bindparam("datumig", $datig);
+        $res->bindparam("userid", $uid);
 
         $res->execute();
 
